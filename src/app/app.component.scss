@@ -1,0 +1,15 @@
+#main{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: stretch;
+    height: 99.3vh;
+
+    
+
+    & .map-pane{
+        flex-grow: 2;
+        background-color: aqua;
+    }
+}

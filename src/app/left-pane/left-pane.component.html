@@ -1,0 +1,49 @@
+<div class="fake-left" [ngStyle]="{'width': leftpaneToggle.toggle ? '5px' : '395px' }">
+    <div class="left-pane-container" [ngStyle]="{'left': leftpaneToggle.toggle ? '-395px' : '0' }">
+        <!--  -->
+        <div class="view left-pane-container-main" >
+            <div class="left-pane-menu">
+                <div class="menu-container">
+                    <ul class="left-pane-menu-list">
+                        <li  class="left-pane-menu-list-item">Trouver votre ecole</li>
+                    </ul>
+                </div>
+            </div> 
+            <div class="form-container">
+                <div class="form-container-control">
+                    <label for="depart" title="Point de depart" class="form-container-control-label"> <div><span>A</span> </div> </label>
+                    <input type="text" title="Point de depart" class="form-container-control-in" name="depart" placeholder="Point de depart" id="id">
+                </div>
+
+                <div class="form-container-control">
+                    <label for="destination" title="Point d'arriver" class="form-container-control-label"> <div><span>B</span></div>  </label>
+                    <input type="text" title="Point d'arriver" class="form-container-control-in" name="destination" placeholder="Point d'arriver">
+                </div>
+
+                <div  class="form-container-control">
+                    <label title="Moyen de transport" for="depart" class="form-container-control-label"> <div><span>T</span> </div> </label>
+                    <select title="Moyen de transport" #transport  class="form-container-control-in" name="transport" id="transport">
+                        <option value="car"> Voiture</option>
+                        <option value="bike">Biciclette</option>
+                        <option value="foot">A pied</option>
+                    </select>
+                
+                </div>
+
+                <div class="form-container-control flex-d-end">
+                    <input type="button" class="form-container-control-btn" value="voir direction">
+                </div>
+            </div>
+
+            <div class="search-box-container">
+                <app-search-box></app-search-box>
+            </div>
+        </div>
+        <div class="btn-toggle-container">
+            <button (click)="leftPaneToggle()"> 
+                <img [src]="leftpaneToggle.imgPath" alt="img" srcset="">
+            </button>
+        </div>
+        
+    </div>
+</div>
