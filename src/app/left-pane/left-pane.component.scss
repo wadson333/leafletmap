@@ -7,11 +7,13 @@ $mar-or-pad-12:12px;
 .fake-left{
     position: relative;
     height: 100%;
+    margin-right: 10px;
     transition: all .2s;
 }
 .left-pane-container{
     position:absolute;
     width:395px;
+    z-index: 10000;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -22,7 +24,7 @@ $mar-or-pad-12:12px;
     box-shadow: 0 3px 2px 2px $color-black-light;
     transition: all .2s;
     font-family: 'Roboto' sans-serif;
-
+    
     &-main{
         position: relative;
         height: 100%;
@@ -49,6 +51,7 @@ $mar-or-pad-12:12px;
             border-bottom-right-radius: 4px;
             box-shadow: 0 1px 0 $color-black-light;
             text-align: center;
+            z-index: inherit;
         }
     }
 }
