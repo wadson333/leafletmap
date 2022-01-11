@@ -1,23 +1,25 @@
-<div class="fake-left" [ngStyle]="{'width': leftpaneToggle.toggle ? '5px' : '395px' }">
-    <div class="left-pane-container" [ngStyle]="{'left': leftpaneToggle.toggle ? '-395px' : '0' }">
+<div class="left-pane-container" [ngStyle]="{'left': leftpaneToggle.toggle ? '0' : '-407px' }">
         <!--  -->
         <div class="view left-pane-container-main" >
             <div class="left-pane-menu">
                 <div class="menu-container">
                     <ul class="left-pane-menu-list">
-                        <li  class="left-pane-menu-list-item">Trouver votre ecole</li>
+                        <li  class="left-pane-menu-list-item">Direction</li>
                     </ul>
-                </div>
+                </div> 
             </div> 
             <div class="form-container">
                 <div class="form-container-control">
                     <label for="depart" title="Point de depart" class="form-container-control-label"> <div><span>A</span> </div> </label>
-                    <input type="text" title="Point de depart" class="form-container-control-in" name="depart" placeholder="Point de depart" id="id">
+                    <input #depart (focus)="setSearchBoxDisplay(depart)" (keyup)="keyUpTextChange($event,depart)" 
+                     (keydown)="keyDownTextChange($event,depart)" (blur)="removeSearchBox()" type="text" title="Point de depart"
+                     class="form-container-control-in" name="depart" placeholder="Point de depart" id="id">
                 </div>
 
                 <div class="form-container-control">
                     <label for="destination" title="Point d'arriver" class="form-container-control-label"> <div><span>B</span></div>  </label>
-                    <input type="text" title="Point d'arriver" class="form-container-control-in" name="destination" placeholder="Point d'arriver">
+                    <input #destination (focus)="setSearchBoxDisplay(destination)" (blur)="removeSearchBox()"  (keyup)="keyUpTextChange($event,destination)"
+                    type="text" title="Point d'arriver" class="form-container-control-in" name="destination" placeholder="Point d'arriver" (keydown)="keyDownTextChange($event,destination)">
                 </div>
 
                 <div  class="form-container-control">
@@ -31,12 +33,13 @@
                 </div>
 
                 <div class="form-container-control flex-d-end">
-                    <input type="button" class="form-container-control-btn" value="voir direction">
+                    <input type="button" (click)="getDirection()" [disabled]="!localisationA || !localisationB"
+                    class="form-container-control-btn" value="voir direction">
                 </div>
             </div>
 
-            <div class="search-box-container">
-                <app-search-box></app-search-box>
+            <div (mouseover)="mouseOver()" (mouseleave)="mouseLeave()" class="search-box-container">
+                <ng-template  appSearch></ng-template>
             </div>
         </div>
         <div class="btn-toggle-container">
@@ -45,5 +48,7 @@
             </button>
         </div>
         
-    </div>
+        <div *ngIf="errorMessage" class="error">
+            {{errorMessage}}
+        </div>
 </div>

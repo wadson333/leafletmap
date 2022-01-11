@@ -1,7 +1,8 @@
-<div class="search-box-container">
+<div class="search-box-container" >
+    <!-- *ngIf="focus" -->
     <ul class="search-box-list">
-        <li class="search-box-list-item">
-            <div class="search-box-list-item-icon">
+        <li class="search-box-list-item" (click)="selectedCurrentPlace()" *ngIf="!currentLocalisationActive">
+            <div class="search-box-list-item-icon"> 
                 <div class="svg-container">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-pin" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -12,11 +13,11 @@
                 
             </div>
             <div class="search-box-list-item-info">
-                <div class="titre"> Ma localisation actuelle</div>
+                <div class="titre">{{currentPlace}}</div>
             </div>
         </li>
 
-        <li class="search-box-list-item">
+        <li *ngFor="let ecole of ecoles" (click)="selectedPlace(ecole)" class="search-box-list-item">
             <div class="search-box-list-item-icon">
                 <div class="svg-container">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-location" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -26,8 +27,8 @@
                 </div>
             </div>
             <div class="search-box-list-item-info">
-                <div class="titre"> Ma localisation actuelle</div>
-                <div class=details><span>commune </span>, <span> departement </span> </div>
+                <div class="titre">{{ecole.nom}}</div>
+                <div class=details><span>{{ecole.adresse.commune}} </span>, <span> {{ecole.adresse.departement}} </span> </div>
             </div>
         </li>
     </ul>

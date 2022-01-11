@@ -4,14 +4,9 @@ $text-color-black:#222;
 $border-color-blue:#1c89c9;
 $mar-or-pad-12:12px;
 
-.fake-left{
-    position: relative;
-    height: 100%;
-    margin-right: 10px;
-    transition: all .2s;
-}
 .left-pane-container{
     position:absolute;
+    top:0;
     width:395px;
     z-index: 10000;
     display: flex;
@@ -113,7 +108,6 @@ $mar-or-pad-12:12px;
                 height: 16px;
                 padding: 2px;
                 border-radius: 50%;
-                font-family:  Tahoma;
                 color:#fff;
                 background-color: #222;
                 position: relative;
@@ -187,3 +181,12 @@ $mar-or-pad-12:12px;
     justify-content: end;
 }
 
+.error{
+    padding: 12px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: $text-color-black;
+    letter-spacing: .6px;
+    border:1px solid  rgba($color: rgb(161, 5, 5), $alpha: .2);
+    overflow-y: hidden;
+}

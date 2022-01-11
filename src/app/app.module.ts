@@ -5,18 +5,21 @@ import { AppComponent } from './app.component';
 import { LeftPaneComponent } from './left-pane/left-pane.component';
 import { MapComponent } from './map/map.component';
 import { SearchBoxComponent } from './left-pane/search-box/search-box.component';
+import { SearchDirective } from './left-pane/search.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     LeftPaneComponent,
     MapComponent,
-    SearchBoxComponent
+    SearchBoxComponent,
+    SearchDirective
   ],
   imports: [
     BrowserModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [SearchBoxComponent]
 })
 export class AppModule { }

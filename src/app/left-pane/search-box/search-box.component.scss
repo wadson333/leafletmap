@@ -8,10 +8,24 @@ $svg-color:#f5ab79;
     margin-top: 12px;
     padding: 12px 5px;
     border-top: .3px solid $color-grey-light;
+    max-height: 50vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    & .error{
+        padding: 12px;
+        margin-bottom: 12px;
+        background-color: rgba($color: $color-black-light, $alpha: .1) ;
+        font-size: 14px;
+        font-family: "Roboto", sans-serif;
+        color: $text-color-black;
+        letter-spacing: .6px;
+        border:1px solid  rgba($color: rgb(161, 5, 5), $alpha: .2);
+    }
 }
 
 .search-box-list{
-    
+   
     &-item{
         display: flex;
         flex-direction: row;
@@ -19,13 +33,10 @@ $svg-color:#f5ab79;
         justify-content: flex-start;
         padding: 9px 0;
         margin-bottom: 9px;
-
         font-size: 14px;
-
         cursor: pointer;
         transition: all .1s;
 
-        
         &:hover{
             background-color:  rgba($color: #1c89c9 , $alpha: .8);
             color:$text-color-white;

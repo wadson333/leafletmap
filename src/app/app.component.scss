@@ -4,8 +4,9 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: stretch;
-    height: 99.3vh;
-
+    overflow: hidden;
+    height: 100vh;
+    font-family: "roboto", sans-serif;
     
 
     & .map-pane{
