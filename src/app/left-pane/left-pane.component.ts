@@ -67,8 +67,6 @@ export class LeftPaneComponent implements OnInit {
   }
 
   localisatioEgale(l1:Localisation,l2:Localisation):boolean{
-    console.log(l1)
-    console.log(l2)
     return  l1.lat==l2.lat && l1.lng==l2.lng;
   }
   
