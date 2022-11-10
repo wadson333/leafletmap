@@ -40,6 +40,47 @@
             <div (mouseover)="mouseOver()" (mouseleave)="mouseLeave()" class="search-box-container">
                 <ng-template  appSearch></ng-template>
             </div>
+            <!-- itineaire box -->
+            <div class="itineaire-box">
+                <ul >
+                    <li *ngFor="let item of routeInfo,let i=index"  class="active-route list-1">
+                        <div>
+                            <a href="#" (click)="routeSelected(i)" class="direction-summury">
+                                <table>
+                                    <tr class="itineaire-c-box"> 
+                                        <td class="icon"><i class="fal fa-car"></i></td>
+                                        <td class="itineaire-t-box">
+                                            <div class="distance"><span>{{item.distance}}</span>,<span>{{item.heure}}</span></div> 
+                                            <div class="routename">{{item.nom}} </div>     
+                                        </td>
+                                    </tr>
+                                </table>
+                            </a>
+                            <div>
+                                <a href="#" (click)="routeDetailsToggle()" class="direction-details">
+                                    <span>  plus de details</span>
+                                    <span >{{routedetailsToggle.currentIcon}}| </span>
+                                </a>
+                                <div [ngStyle]="{'display': routedetailsToggle.toggle ? 'block' : 'none' }" class="routedetails">
+                                    <table>
+                                        <tr
+                                         (mouseover)="routeStepMouseOver(ins.index)"
+                                         (click)=" routeStepClick(ins.index)"
+                                         (mouseout)="routeStepMouseOut(ins.index)"
+
+                                         *ngFor="let ins of item.instruction" class="list-2"> 
+                                            <td class="routeDetailsIcon">
+                                                <span class="leaflet-routing-icon " [ngClass]="'leaflet-routing-icon-'+ ins.iconName"></span></td>
+                                            <td class="routeDetailsDirection"> {{ins.text}} </td>
+                                            <td class="routeDetailsDistance">{{ins.distance}} , {{ins.time}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>  
+            </div>
         </div>
         <div class="btn-toggle-container">
             <button (click)="leftPaneToggle()"> 

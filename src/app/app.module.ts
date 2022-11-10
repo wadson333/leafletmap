@@ -6,6 +6,7 @@ import { LeftPaneComponent } from './left-pane/left-pane.component';
 import { MapComponent } from './map/map.component';
 import { SearchBoxComponent } from './left-pane/search-box/search-box.component';
 import { SearchDirective } from './left-pane/search.directive';
+import {HttpClientModule} from '@angular/common/http'
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { SearchDirective } from './left-pane/search.directive';
     SearchDirective
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

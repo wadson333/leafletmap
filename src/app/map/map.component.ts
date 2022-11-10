@@ -7,6 +7,7 @@ import { DirectionService } from "../service/direction.service";
 import { EcoleDto } from '../model/ecoleDto.model';
 import { CurrentPlace } from '../model/currentplace.model';
 import { Localisation } from '../model/localisation.model';
+import { RouteInfo } from '../model/route.model';
 
 @Component({
   selector: 'app-map',
@@ -17,9 +18,18 @@ export class MapComponent implements OnInit,AfterViewInit,OnChanges,OnDestroy {
   map:L.Map;
   directionSubject:Subscription;
   addMarkerSubject:Subscription;
+  routeInfo:RouteInfo[]=[];
+  markerRound=L.circleMarker([0,0], {
+      radius: 5,
+      color: '#03f',
+      fillColor: 'white',
+      opacity: 1,
+      fillOpacity: 0.7
+  })
 
   layerGroup= new L.LayerGroup();
   route:L.Routing.Control;
+  routeTable;
 
   markerA=L.marker([0,0],{
     icon:new L.Icon({
@@ -48,6 +58,10 @@ export class MapComponent implements OnInit,AfterViewInit,OnChanges,OnDestroy {
     this.setDirection();
     this.setMarker()
     this.removeMarker();
+    this.routeStepMouseOver()
+    this.routeStepMouseOut()
+    this.routeStepClick()
+    this.routeSelected()
   }
  
   ngAfterViewInit(){
@@ -106,10 +120,9 @@ export class MapComponent implements OnInit,AfterViewInit,OnChanges,OnDestroy {
     if(this.route ){
       this.map.removeControl(this.route);
     }
-
     this.route =L.Routing.control({
       router: L.Routing.osrmv1({
-        language: 'fr', profile:transportType, 
+        language: 'fr', profile:"foot", 
       }),
       plan:plan,
       showAlternatives: false,
@@ -120,10 +133,50 @@ export class MapComponent implements OnInit,AfterViewInit,OnChanges,OnDestroy {
       addWaypoints:false,
       autoRoute:true,
     })
-
-    this.route.addTo(this.map);
+    this.route.on('routesfound',e=>{
+      let h="",  d="" ,name="",
+      routeStepInfo:{text:string, distance:string, iconName:string,time:string,index:number}[]=[],inst:L.Routing.IInstruction[]=[],o:L.Routing.IRoute
+      const formatter=new L.Routing.Formatter();
+      for (let index = 0; index < e.routes.length; index++) {
+         h =formatter.formatTime(e.routes[index].summary.totalTime);
+         d =formatter.formatDistance(e.routes[index].summary.totalDistance)
+         this.routeTable=e.routes;
+         name =e.routes[index].name;
+         inst =e.routes[index].instructions;
+          for (let i = 0; i < inst.length; i++) {
+            const element = inst[i];
+              routeStepInfo.push({
+                  iconName:formatter.getIconName(element,i),
+                  distance:formatter.formatDistance(element.distance),
+                  time:formatter.formatTime(element.time),
+                  text:element.text,
+                  index:Object.values(element)[6]
+                });
+          }
+          this.routeInfo.push({heure:h,distance:d,nom:name,instruction:routeStepInfo});   
+      } 
+      this.directionService.transferRouteInfo.next(this.routeInfo);
+      this.routeInfo=[]
+      console.log("found");
+    })
+    this.selectedRoute(0)
+    this.route.addTo(this.map)
   }
   
+  routeSelected(){
+    this.directionService.routeSelected.subscribe(index=>{
+      this.map.removeControl(this.route)
+      this.selectedRoute(index)
+      // this.route.addTo(this.map)
+    })
+  }
+  selectedRoute(index:number){
+    this.route.on('routeselected', e=> {
+      e.route=this.routeTable[index]
+      console.log(index)
+    }).addTo(this.map)
+    console.log(index)
+  }
 
   removeMarker(){
     this.directionService.removeMaker.subscribe(markerNumber=>{
@@ -172,4 +225,30 @@ export class MapComponent implements OnInit,AfterViewInit,OnChanges,OnDestroy {
         this.layerGroup.addLayer(marker);
     }
   }
+
+  routeStepMouseOver(){
+    this.directionService.mouseOverStep.subscribe(e=>{
+      this.markerRound.setLatLng(this.routeTable[0].coordinates[e])
+       this.markerRound.addTo(this.map)
+    })
+  }
+
+  routeStepMouseOut(){
+    this.directionService.mouseOutStep.subscribe(e=>{
+       if (this.markerRound) {
+        this.map.removeLayer(this.markerRound);
+        // delete this.markerRound;
+      }
+    })
+  }
+
+  routeStepClick(){
+    this.directionService.clickStep.subscribe(e=>{
+      this.markerRound.setLatLng(this.routeTable[0].coordinates[e])
+      this.map.panTo(this.routeTable[0].coordinates[e])
+      this.markerRound.addTo(this.map)
+
+    })
+  }
+
 }

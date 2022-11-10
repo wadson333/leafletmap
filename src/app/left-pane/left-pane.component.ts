@@ -5,6 +5,7 @@ import { SearchBoxComponent } from "./search-box/search-box.component";
 import { SearchDirective } from "./search.directive";
 import { Subscription } from "rxjs";
 import { Localisation } from '../model/localisation.model';
+import { RouteInfo } from '../model/route.model';
 
 @Component({
   selector: 'app-left-pane',
@@ -32,6 +33,15 @@ export class LeftPaneComponent implements OnInit {
     imgPath:"./assets/img/open-arrow.svg" 
   };
 
+  routedetailsToggle={
+    toggle:false,
+    currentIcon:`<i class="fal fa-chevron-down"></i>`,
+    iconUp:`<i class="fal fa-chevron-up"></i>`,
+    iconDown:`<i class="fal fa-chevron-down"></i>`
+  }
+
+  routeInfo:RouteInfo[]=[];
+
   ecoleList:EcoleDto[]=[];
   
   constructor(private directionService:DirectionService,private searchoxFactory:ComponentFactoryResolver) { }
@@ -54,8 +64,13 @@ export class LeftPaneComponent implements OnInit {
             this.errorMessage="Votre point de départ et votre point d'arriver sont identiques."
           }else{
             this.directionService.directionEvent.next({transportType:this.transport.nativeElement.value,depart:this.localisationA,destination:this.localisationB})
+            this.directionService.transferRouteInfo.subscribe(info=>{
+              this.routeInfo=info;
+              //console.log(info)
+            })
             this.errorMessage="";
           }   
+         // console.log(this.transport.nativeElement.value)
       } catch (error) {
           this.errorMessage=`On ne peut pas afficher la direction que vous demander.  
           Veuillez vérifier les écoles sélectionner.`;
@@ -66,8 +81,28 @@ export class LeftPaneComponent implements OnInit {
     }
   }
 
+  routeStepMouseOver(i:number){
+    console.log(i)
+    this.directionService.mouseOverStep.next(i)
+  }
+
+  routeStepMouseOut(i:number){
+    this.directionService.mouseOutStep.next(i)
+  }
+
+  routeStepClick(i:number){
+    this.directionService.clickStep.next(i)
+  }
+  
+  setRouteInfo(){
+    
+  }
   localisatioEgale(l1:Localisation,l2:Localisation):boolean{
     return  l1.lat==l2.lat && l1.lng==l2.lng;
+  }
+
+  routeSelected(index:number){
+    this.directionService.routeSelected.next(index)
   }
   
   /*
@@ -124,8 +159,12 @@ export class LeftPaneComponent implements OnInit {
       this.currentLocalisation={ lat:position.coords.latitude, lng:position.coords.longitude}
       this.reinitializeMapLocaction(element,this.currentLocalisation)
       element.value=text;
+      this.directionService.getLoc(position.coords.latitude,position.coords.longitude).subscribe(data=>{
+        console.log(data)
+      })
       this.directionService.markerEvent.next({currentPlace:{nom:text,position:this.currentLocalisation},type:element.name=="depart"? 1 : 2});
       element.disabled=false;
+      
     });
     element.value="En train de vous localiser...",
     element.disabled=true;  
@@ -188,5 +227,10 @@ export class LeftPaneComponent implements OnInit {
   setSearchBoxDisplay(element:HTMLInputElement){
     this.errorMessage="";
     this.addSearchBox(element);
+  }
+
+  routeDetailsToggle(){
+    this.routedetailsToggle.toggle=!this.routedetailsToggle.toggle;
+    this.routedetailsToggle.currentIcon=this.routedetailsToggle.toggle ? this.routedetailsToggle.iconUp :this.routedetailsToggle.iconDown;
   }
 }
